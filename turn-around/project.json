@@ -4,9 +4,11 @@
   "id": "trun-around",
   "renderMode": 1,
   "showFPS": false,
+  "modules" : ["cocos2d","extensions"],
   "jsList": [
     "src/resource.js",
     "src/StartScene.js",
-    "src/SoldierSprite.js"
+    "src/SoldierSprite.js",
+    "src/PlayScene.js"
   ]
 }
