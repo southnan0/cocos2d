@@ -2,8 +2,8 @@ var EndLayer =  cc.LayerColor.extend({
     ctor:function (score) {
         this._super();
         const winSize = cc.winSize;
-        this.width = winSize.width;
-        this.height = winSize.height;
+        this.width = winSize.width * 0.7;
+        this.height = 200;
         this.attr({
             x: winSize.width / 2 - this.width/2,
             y: winSize.height / 2 - this.height/2

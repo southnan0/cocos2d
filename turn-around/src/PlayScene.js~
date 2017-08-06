@@ -1,4 +1,3 @@
-//todo сно╥╫АйЬё╛узуж╡Ц╫Шж╧╣Ц╩В╢╘м╦
 var PlayLayer = cc.Layer.extend({
     label: null,
     timer:null,
