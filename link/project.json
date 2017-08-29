@@ -1,0 +1,13 @@
+{
+  "debugMode": 1,
+  "frameRate": 60,
+  "id": "link",
+  "renderMode": 1,
+  "showFPS": false,
+  "modules" : ["cocos2d","extensions"],
+  "jsList": [
+    "src/resource.js",
+    "src/StartScene.js",
+    "src/PlayLayer.js"
+  ]
+}

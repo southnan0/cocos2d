@@ -1,4 +1,3 @@
-//todo 游戏结束，遮罩层禁止点击穿透
 var PlayLayer = cc.Layer.extend({
     label: null,
     timer:null,
@@ -28,13 +27,13 @@ var PlayLayer = cc.Layer.extend({
     },
     reset: function () {
         this.speed = 5000;
-        this.times = 0;   //正确次数
-        this.failTimes = 0;  //错误次数
-        this.largeFailTime = 3;  //最大失败次数
-        this.curPosition = null;  //当前方向
-        this.arrPosition = ['top', 'right', 'bottom', 'left'];  // 位置数组
-        this.timeLimit = 30;  //计时器
-        this._count = 0;  //计时器当前次数
+        this.times = 0;
+        this.failTimes = 0;
+        this.largeFailTime = 3;
+        this.curPosition = null;
+        this.arrPosition = ['top', 'right', 'bottom', 'left'];  // 位锟斤拷锟斤拷锟斤拷
+        this.timeLimit = 30;
+        this._count = 0;
     },
     runTimer: function () {
         this._count++;
@@ -50,9 +49,9 @@ var PlayLayer = cc.Layer.extend({
         this._loading = new ccui.LoadingBar();
         var size = cc.winSize;
         this._loading.setName("LoadingBar");
-        this._loading.loadTexture(res.loading);//设置进度条的加载图片
+        this._loading.loadTexture(res.loading);
         this._loading.setScale(Number((size.width / this._loading.width).toFixed(2)), Number( (20 / this._loading.height).toFixed(2)) );
-        this._loading.setPercent(0);//开始的进度
+        this._loading.setPercent(0);
         this._loading.attr({
             anchorX: 0,
             anchorY: 0,

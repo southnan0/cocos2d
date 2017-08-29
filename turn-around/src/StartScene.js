@@ -15,7 +15,7 @@ var StartLayer = cc.Layer.extend({
         this.addMenu();
     },
     addMenu:function () {
-        var startItem = new cc.MenuItemFont('start',this.handleStart.bind(this),this);
+        var startItem = new cc.MenuItemFont('开始',this.handleStart.bind(this),this);
         var menu = new cc.Menu(startItem);
 
         this.addChild(menu);
