@@ -4,7 +4,7 @@ var StartScene = cc.Layer.extend({
     _picNumber: 4,
     _imgList: g_pic,
     _row: 4,
-    _col: 4,
+    _col: 7,
     _objItem: {
         x: null,
         y: null,

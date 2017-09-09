@@ -6,6 +6,10 @@
   "showFPS": false,
   "modules" : ["cocos2d","extensions"],
   "jsList": [
+    "src/checkGroupPoint.js",
+    "src/checkOne.js",
+    "src/findPath.js",
+    "src/checkZero.js",
     "src/resource.js",
     "src/StartScene.js",
     "src/PlayLayer.js"
