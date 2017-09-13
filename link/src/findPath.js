@@ -90,4 +90,94 @@ function checkNext(i, j, iDirection, jDirection, i1, j1, iR, jR, arr) {
     }
     return arrNext;
 }
+function getShortPath(item1, item2, arr) {
+    //right
+    //top
+    //bottom
+}
+/**
+ *
+ * @param item1
+ * @param item2
+ * @param arr
+ * @returns {Array}
+ */
+function findLeftPath(item1, item2, arr) {
+    //left
+    //0 item1 0
+    //0 0     item2
+    //
+    var item1_left = item1.x;
+    var item2_left = item2.x;
+    var left = item1_left > item2_left ? item2_left : item1_left;
+    var gap = item1_left - item2_left;
+    var dGap = gap > 0;
+    var yGap = item2.y - item1.y;
+    var arrLeft = [];
+    if (yGap === 0)
+        return [];
+    var arr1 = [];
+    var arr2 = [];
+    var x = dGap ? item2.x : item1.x;
+    for (var k = 1; k <= Math.abs(gap); k++) {
+        if (dGap) {
+            arr1.push(arr[item1.y][item1_left - k]);
+        }
+        else {
+            arr2.push(arr[item2.y][item2_left - k]);
+        }
+    }
+    for (var i = 1; i <= left; i++) {
+        arr1.push(arr[item1.y][x - i]);
+        arr2.push(arr[item2.y][x - i]);
+        arrLeft.push(arr1);
+        var dY = yGap > 0 ? 1 : -1;
+        for (var j = 1; j < Math.abs(yGap); j++) {
+            arrLeft[i - 1].push(arr[item1.y + j * dY][x - i]);
+        }
+        var arr2_bak = arr2.slice(0, arr2.length);
+        arrLeft = arrLeft[i - 1].concat(arr2_bak.reverse());
+    }
+    return arrLeft;
+}
+function findRightPath(item1, item2, arr) {
+    //left 
+    //0 item1 0
+    //0 0     item2
+    //
+    var item1_left = arr[0].length - item1.x - 1;
+    var item2_left = arr[0].length - item2.x - 1;
+    var left = item1_left > item2_left ? item2_left : item1_left;
+    var gap = item1_left - item2_left;
+    var dGap = gap > 0; //item1.x 小
+    var yGap = item2.y - item1.y;
+    var arrLeft = [];
+    if (yGap === 0)
+        return [];
+    // todo  补全
+    var arr1 = [];
+    var arr2 = [];
+    var x = dGap ? item2.x : item1.x;
+    for (var k = 1; k <= Math.abs(gap); k++) {
+        if (dGap) {
+            arr1.push(arr[item1.y][item1.x + k]);
+        }
+        else {
+            arr2.push(arr[item2.y][item2.x + k]);
+        }
+    }
+    for (var i = 1; i <= left; i++) {
+        arr1.push(arr[item1.y][x + i]);
+        arr2.push(arr[item2.y][x + i]);
+        arrLeft.push(arr1);
+        var dY = yGap > 0 ? 1 : -1;
+        for (var j = 1; j < Math.abs(yGap); j++) {
+            arrLeft[i - 1].push(arr[item1.y + j * dY][x + i]);
+        }
+        var arr2_bak = arr2.slice(0, arr2.length);
+        arrLeft = arrLeft[i - 1].concat(arr2_bak.reverse());
+    }
+    return arrLeft;
+}
+// module.exports = {findPathMethod,checkNext,getPath}; 
 //# sourceMappingURL=findPath.js.map

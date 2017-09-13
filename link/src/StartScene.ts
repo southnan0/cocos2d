@@ -21,9 +21,9 @@ var StartScene = cc.Layer.extend({
                 if (j !== 0 && i !== 0 && i !== this._col + 1 && j !== this._row + 1) {
                     const len = allImg.length;
                     const order = Math.floor(Math.random() * len);
-                    this._arrData[i].push({...this._objItem, x: j, y: i, status: 1, src: allImg.splice(order, 1)[0]});
+                    this._arrData[i].push({...this._objItem, x: j, y: i, status: 1, src: allImg.splice(order, 1)[0],id:j+'_'+i});
                 } else {
-                    this._arrData[i].push({...this._objItem, x: j, y: i});
+                    this._arrData[i].push({...this._objItem, x: j, y: i,id:j+'_'+i});
                 }
             }
         }

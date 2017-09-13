@@ -4,7 +4,7 @@ var g_pic = (
     function () {
         const arr = [];
         for(let i=1;i<7;i++){
-            arr.push(`p${i}.png`)
+            arr.push(`p${i}`)
         }
         return arr;
     }

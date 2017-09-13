@@ -20,7 +20,12 @@ var PlayLayer = cc.Layer.extend({
     },
     initButtonItem: function (item) {
         var _this = this;
-        var buttonItem = new cc.MenuItemImage(item.src, item.src, function (button) {
+        if (!item.src)
+            return true;
+        var buttonItem = new cc.MenuItemImage(item.src + '.png', item.src + '_a.png', function (button) {
+            button.attr({
+                scale: 0.4
+            });
             var name = button.getName();
             if (!name)
                 return;
@@ -29,7 +34,10 @@ var PlayLayer = cc.Layer.extend({
             var curItem = _this._arrData[y][x];
             var src = curItem.src;
             if (src) {
-                if (_this._lastSelectImg && _this._lastSelectImg.src === src && _this.checkEliminated(_this._lastSelectImg, curItem)) {
+                if (_this._lastSelectImg
+                    && _this._lastSelectImg.id !== curItem.id
+                    && _this._lastSelectImg.src === src
+                    && _this.checkEliminated(_this._lastSelectImg, curItem)) {
                     // todo 消除时，几秒钟的动画效果
                     _this._arrData[_this._lastSelectImg.y][_this._lastSelectImg.x].src = null;
                     _this._arrData[y][x].src = null;
@@ -38,7 +46,7 @@ var PlayLayer = cc.Layer.extend({
                     _this._parentLayer.resetLayer.call(_this._parentLayer);
                     console.info('yes');
                 }
-                else {
+                else if (curItem.src) {
                     _this._lastSelectImg = curItem;
                     _this._curSelectItem = null;
                 }
@@ -71,16 +79,34 @@ var PlayLayer = cc.Layer.extend({
     getShortPath: function (xGap1, xGap2, yGap1, yGap2, item1, item2, arr) {
         var hasPath = false;
         if (xGap1 === xGap2 && xGap2 === 0) {
-            var g = yGap1 > yGap2 ? yGap1 : yGap2;
-            for (var i = 0; i < g; i++) {
-                hasPath = !(checkObstacle(0, g + i, item1, arr) || checkObstacle(0, g + i, item2, arr));
+            var gy = yGap1 > yGap2 ? yGap1 : yGap2;
+            var gx = item1.x - item2.x;
+            var dx = gx > 0 ? 1 : -1;
+            var g = gy < 0 ?
+                :
+            ;
+            for (var i = 1; i <= Math.abs(gy); i++) {
+                hasPath = !(checkObstacle(0, gy + i, item1, arr)
+                    ||
+                        checkObstacle(0, gy + i, item2, arr));
+                if (hasPath) {
+                    for (var j = 1; j < Math.abs(gx); j++) {
+                        checkObstacle(item1.x);
+                    }
+                }
+                if (hasPath)
+                    break;
+            }
+            var g2 = item1.x;
+            for (var i = 1; i <= g2; i++) {
+                hasPath = !(checkObstacle(item1.x + i, 0, item1, arr) || checkObstacle(item1.x + i, 0, item2, arr));
                 if (hasPath)
                     break;
             }
         }
         if (yGap1 === yGap2 && yGap2 === 0) {
             var g = xGap1 > xGap2 ? xGap1 : xGap2;
-            for (var i = 0; i < g; i++) {
+            for (var i = 1; i < g; i++) {
                 hasPath = !(checkObstacle(g + i, 0, item1, arr) || checkObstacle(g + i, 0, item2, arr));
                 if (hasPath)
                     break;
@@ -114,7 +140,7 @@ var PlayLayer = cc.Layer.extend({
         // );
         var y2_hasPath = this.getShortPath(0, 0, this._parentLayer._col + 1 - item1.y, this._parentLayer._col + 1 - item2.y, item1, item2, this._arrData);
         // const y2_hasPath = !(
-        //     checkObstacle(0, this._parentLayer._col + 1 - item1.y, item1, this._arrData)
+        //     checkObstacle(0, this._parentLayto'doer._col + 1 - item1.y, item1, this._arrData)
         //     ||
         //     checkObstacle(0, this._parentLayer._col + 1 - item2.y, item2, this._arrData)
         // );
@@ -152,61 +178,4 @@ var PlayLayer = cc.Layer.extend({
     doHint: function () {
     }
 });
-/*
-for (let j = 0; j < Math.abs(direction.x); j++) {
-    arr[i][j] = {
-        y: item1.y + i * y,
-        x: item1.x + i * x
-    };
-    if (!this._arrData[item1.y + i * y][item1.x + i * x].src) {
-        arr[i][j] = null;
-    } else {
-        if (i === 0 && j === 0) {
-            if (direction.y < 0 && direction.x < 0) {
-                arr[i][j].t = 2;
-                arr[i][j].r = 2;
-                arr[i][j].b = 0;
-                arr[i][j].l = 0;
-            } else if (direction.y < 0 && direction.x > 0) {
-                arr[i][j].t = 2;
-                arr[i][j].r = 0;
-                arr[i][j].b = 0;
-                arr[i][j].l = 2;
-            } else if (direction.y > 0 && direction.x > 0) {
-                arr[i][j].t = 0;
-                arr[i][j].r = 0;
-                arr[i][j].b = 2;
-                arr[i][j].l = 2;
-            } else if (direction.y > 0 && direction.x < 0) {
-                arr[i][j].t = 0;
-                arr[i][j].r = 2;
-                arr[i][j].b = 2;
-                arr[i][j].l = 0;
-            }
-        } else {
-            if (i === 0 && direction.y < 0) {
-                arr[i][j].t = 2;
-                arr[i][j].r = 1;
-                arr[i][j].b = 0;
-                arr[i][j].l = 1;
-            } else if (i === 0 && direction.y > 0) {
-                arr[i][j].b = 2;
-                arr[i][j].t = 0;
-                arr[i][j].r = 1;
-                arr[i][j].l = 1;
-            } else if (j === 0 && direction.x < 0) {
-                arr[i][j].l = 2;
-                arr[i][j].r = 0;
-                arr[i][j].b = 1;
-                arr[i][j].t = 1;
-            } else if (j === 0 && direction.x > 0) {
-                arr[i][j].r = 2;
-                arr[i][j].l = 0;
-                arr[i][j].b = 1;
-                arr[i][j].t = 1;
-            }
-        }
-    }
-}
-*/
 //# sourceMappingURL=PlayLayer.js.map

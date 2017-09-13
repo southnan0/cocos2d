@@ -94,3 +94,65 @@ function checkNext(i, j, iDirection, jDirection, i1, j1, iR, jR, arr) {
     }
     return arrNext;
 }
+
+function getShortPath(item1,item2,arr){
+
+
+
+
+    //right
+
+    //top
+
+    //bottom
+}
+
+/**
+ *
+ * @param item1
+ * @param item2
+ * @param arr
+ * @returns {Array}
+ */
+function findLeftPath(item1,item2,arr){
+    //left
+    //0 item1 0
+    //0 0     item2
+    //
+    const item1_left = item1.x;
+    const item2_left = item2.x;
+    const left = item1_left>item2_left?item2_left:item1_left;
+    const gap = item1_left-item2_left;
+    const dGap = gap>0;
+    const yGap = item2.y - item1.y;
+    let arrLeft = [];
+    if(yGap === 0) return [];
+    const arr1 = [];
+    const arr2 = [];
+
+    const x = dGap?item2.x:item1.x;
+
+    for(let k = 1;k<=Math.abs(gap);k++){
+        if(dGap){
+            arr1.push(arr[item1.y][item1_left-k]);
+        }else{
+            arr2.push(arr[item2.y][item2_left-k]);
+        }
+    }
+
+    for(let i = 1;i<=left;i++){
+        arr1.push(arr[item1.y][x-i]);
+        arr2.push(arr[item2.y][x-i]);
+        arrLeft.push(arr1);
+        const dY = yGap>0?1:-1;
+
+        for(let j = 1;j<Math.abs(yGap);j++){
+            arrLeft[i-1].push(arr[item1.y+j*dY][x-i])
+        }
+        const arr2_bak = arr2.slice(0,arr2.length);
+        arrLeft = arrLeft[i-1].concat(arr2_bak.reverse());
+    }
+    return arrLeft;
+}
+
+// module.exports = {findPathMethod,checkNext,getPath};

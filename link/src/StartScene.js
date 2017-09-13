@@ -28,10 +28,10 @@ var StartScene = cc.Layer.extend({
                 if (j !== 0 && i !== 0 && i !== this._col + 1 && j !== this._row + 1) {
                     var len = allImg.length;
                     var order = Math.floor(Math.random() * len);
-                    this._arrData[i].push(__assign({}, this._objItem, { x: j, y: i, status: 1, src: allImg.splice(order, 1)[0] }));
+                    this._arrData[i].push(__assign({}, this._objItem, { x: j, y: i, status: 1, src: allImg.splice(order, 1)[0], id: j + '_' + i }));
                 }
                 else {
-                    this._arrData[i].push(__assign({}, this._objItem, { x: j, y: i }));
+                    this._arrData[i].push(__assign({}, this._objItem, { x: j, y: i, id: j + '_' + i }));
                 }
             }
         }

@@ -1,7 +1,11 @@
 {
   "name": "link",
   "version": "0.0.1",
-  "dependencies": {
-    
+  "scripts": {
+    "test": "mocha test/*.spec.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^3.5.1"
   }
 }

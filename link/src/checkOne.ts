@@ -25,14 +25,16 @@ function checkObstacle(xGap, yGap, item, arr) {
     const yType = yGap >= 0 ? 1 : -1;
 
     if (xGap === 0) {
-        for (let j = 1; j <= Math.abs(yGap); j++) {
+        for (let j = 1; j < Math.abs(yGap); j++) {
+            console.info(item.y + j * yType)
+            console.info(item.x)
             if (arr[item.y + j * yType][item.x].src) {
                 hasObstacle = true;
                 break;
             }
         }
     } else if (yGap === 0) {
-        for (let i = 1; i <= Math.abs(xGap); i++) {
+        for (let i = 1; i < Math.abs(xGap); i++) {
             if (arr[item.y][item.x + i * xType].src) {
                 hasObstacle = true;
                 break;

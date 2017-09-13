@@ -18,7 +18,9 @@ function checkObstacle(xGap, yGap, item, arr) {
     var xType = xGap >= 0 ? 1 : -1;
     var yType = yGap >= 0 ? 1 : -1;
     if (xGap === 0) {
-        for (var j = 1; j <= Math.abs(yGap); j++) {
+        for (var j = 1; j < Math.abs(yGap); j++) {
+            console.info(item.y + j * yType);
+            console.info(item.x);
             if (arr[item.y + j * yType][item.x].src) {
                 hasObstacle = true;
                 break;
@@ -26,7 +28,7 @@ function checkObstacle(xGap, yGap, item, arr) {
         }
     }
     else if (yGap === 0) {
-        for (var i = 1; i <= Math.abs(xGap); i++) {
+        for (var i = 1; i < Math.abs(xGap); i++) {
             if (arr[item.y][item.x + i * xType].src) {
                 hasObstacle = true;
                 break;

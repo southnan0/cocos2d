@@ -23,10 +23,15 @@ var PlayLayer = cc.Layer.extend({
         });
     },
     initButtonItem(item) {
+        if(!item.src) return true;
+
         const buttonItem = new cc.MenuItemImage(
-            item.src,
-            item.src,
+            item.src+'.png',
+            item.src+'_a.png',
             (button) => {
+                button.attr({
+                    scale: 0.4
+                });
                 const name = button.getName();
                 if (!name) return;
                 const x = name.split(this._nameSpliter)[0];
@@ -34,7 +39,12 @@ var PlayLayer = cc.Layer.extend({
                 const curItem = this._arrData[y][x];
                 const src = curItem.src;
                 if (src) {
-                    if (this._lastSelectImg && this._lastSelectImg.src === src && this.checkEliminated(this._lastSelectImg, curItem)) {
+                    if (
+                        this._lastSelectImg
+                        && this._lastSelectImg.id !== curItem.id
+                        && this._lastSelectImg.src === src
+                        && this.checkEliminated(this._lastSelectImg, curItem)
+                    ) {
                         // todo 消除时，几秒钟的动画效果
                         this._arrData[this._lastSelectImg.y][this._lastSelectImg.x].src = null;
                         this._arrData[y][x].src = null;
@@ -42,7 +52,7 @@ var PlayLayer = cc.Layer.extend({
                         this._curSelectItem = null;
                         this._parentLayer.resetLayer.call(this._parentLayer);
                         console.info('yes')
-                    } else {
+                    } else if (curItem.src) {
                         this._lastSelectImg = curItem;
                         this._curSelectItem = null;
                     }
@@ -79,16 +89,38 @@ var PlayLayer = cc.Layer.extend({
     getShortPath(xGap1, xGap2, yGap1, yGap2, item1, item2, arr) {
         let hasPath = false;
         if (xGap1 === xGap2 && xGap2 === 0) {
-            const g = yGap1 > yGap2 ? yGap1 : yGap2;
-            for (let i = 0; i < g; i++) {
-                hasPath = !(checkObstacle(0, g + i, item1, arr) || checkObstacle(0, g + i, item2, arr));
+            const gy = yGap1 > yGap2 ? yGap1 : yGap2;
+            const gx = item1.x-item2.x;
+            const dx = gx>0?1:-1;
+            const g = gy<0?
+            for (let i = 1; i <= Math.abs(gy); i++) {
+                hasPath = !(
+                    checkObstacle(0,gy + i,  item1, arr)
+                    || 
+                    checkObstacle(0,gy + i,  item2, arr)
+                );
+
+                if(hasPath){
+                    for(let j = 1;j<Math.abs(gx);j++){
+                        checkObstacle(item1.x)
+                    }
+                }
+
                 if (hasPath) break;
             }
+
+
+            const g2 = item1.x;
+            for (let i = 1; i <= g2; i++) {
+                hasPath = !(checkObstacle(item1.x + i,0,  item1, arr) || checkObstacle(item1.x + i,0,  item2, arr));
+                if (hasPath) break;
+            }
+
         }
 
         if (yGap1 === yGap2 && yGap2 === 0) {
             const g = xGap1 > xGap2 ? xGap1 : xGap2;
-            for (let i = 0; i < g; i++) {
+            for (let i = 1; i < g; i++) {
                 hasPath = !(checkObstacle(g + i, 0, item1, arr) || checkObstacle(g + i, 0, item2, arr));
                 if (hasPath) break;
             }
@@ -123,7 +155,7 @@ var PlayLayer = cc.Layer.extend({
         // );
         const y2_hasPath = this.getShortPath(0, 0, this._parentLayer._col + 1 - item1.y, this._parentLayer._col + 1 - item2.y, item1, item2, this._arrData);
         // const y2_hasPath = !(
-        //     checkObstacle(0, this._parentLayer._col + 1 - item1.y, item1, this._arrData)
+        //     checkObstacle(0, this._parentLayto'doer._col + 1 - item1.y, item1, this._arrData)
         //     ||
         //     checkObstacle(0, this._parentLayer._col + 1 - item2.y, item2, this._arrData)
         // );
@@ -168,61 +200,3 @@ var PlayLayer = cc.Layer.extend({
 
     }
 });
-
-/*
-for (let j = 0; j < Math.abs(direction.x); j++) {
-    arr[i][j] = {
-        y: item1.y + i * y,
-        x: item1.x + i * x
-    };
-    if (!this._arrData[item1.y + i * y][item1.x + i * x].src) {
-        arr[i][j] = null;
-    } else {
-        if (i === 0 && j === 0) {
-            if (direction.y < 0 && direction.x < 0) {
-                arr[i][j].t = 2;
-                arr[i][j].r = 2;
-                arr[i][j].b = 0;
-                arr[i][j].l = 0;
-            } else if (direction.y < 0 && direction.x > 0) {
-                arr[i][j].t = 2;
-                arr[i][j].r = 0;
-                arr[i][j].b = 0;
-                arr[i][j].l = 2;
-            } else if (direction.y > 0 && direction.x > 0) {
-                arr[i][j].t = 0;
-                arr[i][j].r = 0;
-                arr[i][j].b = 2;
-                arr[i][j].l = 2;
-            } else if (direction.y > 0 && direction.x < 0) {
-                arr[i][j].t = 0;
-                arr[i][j].r = 2;
-                arr[i][j].b = 2;
-                arr[i][j].l = 0;
-            }
-        } else {
-            if (i === 0 && direction.y < 0) {
-                arr[i][j].t = 2;
-                arr[i][j].r = 1;
-                arr[i][j].b = 0;
-                arr[i][j].l = 1;
-            } else if (i === 0 && direction.y > 0) {
-                arr[i][j].b = 2;
-                arr[i][j].t = 0;
-                arr[i][j].r = 1;
-                arr[i][j].l = 1;
-            } else if (j === 0 && direction.x < 0) {
-                arr[i][j].l = 2;
-                arr[i][j].r = 0;
-                arr[i][j].b = 1;
-                arr[i][j].t = 1;
-            } else if (j === 0 && direction.x > 0) {
-                arr[i][j].r = 2;
-                arr[i][j].l = 0;
-                arr[i][j].b = 1;
-                arr[i][j].t = 1;
-            }
-        }
-    }
-}
-*/
